@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CDD · sin sombras · título centro · degradado</title>
+    <!-- Fuentes: Century (Cormorant Garamond) para títulos, Bookman (Georgia) para resto -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* Fondo degradado suave en tonos azules y verdes, más claro, sin sombras */
+            background: linear-gradient(145deg, #c2e3f0 0%, #a6d4e0 30%, #8fcbd6 60%, #b0e0d6 100%);
+            min-height: 100vh;
+            font-family: 'Georgia', 'Bookman Old Style', 'Bookman', serif;
+            color: #1e4a4a;
+            padding: 2rem 2.5rem;
+        }
+
+        .wrapper {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border-radius: 60px 12px 60px 12px;
+            padding: 2.5rem 2.8rem 4rem;
+            border: 2px solid rgba(80, 140, 140, 0.3);
+        }
+
+        /* Título principal centrado, sin sombras */
+        .main-title {
+            font-family: 'Cormorant Garamond', 'Century', 'Times New Roman', serif;
+            font-size: 4.2rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+            color: #0a4a50;
+            text-transform: uppercase;
+            text-align: center;
+            line-height: 1.2;
+            margin-bottom: 1.2rem;
+            /* sin text-shadow */
+        }
+        .main-title span {
+            display: block;
+            font-size: 3.8rem;
+            font-weight: 600;
+        }
+
+        /* definición a la derecha, sin sombras */
+        .definicion {
+            font-family: 'Georgia', 'Bookman Old Style', serif;
+            max-width: 750px;
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #023f45;
+            text-align: right;
+            background: rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(4px);
+            padding: 1.2rem 2.2rem;
+            border-radius: 60px 8px 60px 8px;
+            border-right: 6px solid #2f8f8f;
+            margin-left: auto;
+            /* sin box-shadow */
+        }
+
+        /* 6 carpetas principales: grid 3x2, sin sombras */
+        .carpetas-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin: 3.5rem 0 2rem;
+        }
+
+        .carpeta-principal {
+            background: rgba(220, 245, 245, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 50px 10px 50px 10px;
+            padding: 2rem 0.8rem;
+            text-align: center;
+            font-family: 'Cormorant Garamond', 'Century', serif;
+            font-size: 2rem;
+            font-weight: 600;
+            color: #025257;
+            border: 2px solid #479b9b;
+            cursor: pointer;
+            transition: background 0.2s;
+            min-height: 170px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1.2;
+        }
+        .carpeta-principal:hover {
+            background: rgba(240, 255, 255, 0.95);
+            border-color: #1f8a8a;
+        }
+
+        /* paneles secundarios, sin sombras */
+        .panel-niveles, .panel-herramientas {
+            background: rgba(230, 250, 250, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 60px 12px 60px 12px;
+            padding: 2.5rem 2rem;
+            margin: 2.5rem 0 1.5rem;
+            border: 2px solid #479b9b;
+        }
+        .hidden { display: none !important; }
+
+        .cabecera-area, .cabecera-nivel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            border-bottom: 3px solid #1f8a8a;
+            padding-bottom: 0.8rem;
+            flex-wrap: wrap;
+        }
+        .cabecera-area h2, .cabecera-nivel h3 {
+            font-family: 'Cormorant Garamond', 'Century', serif;
+            font-size: 2.4rem;
+            color: #01494f;
+        }
+
+        .btn-cerrar, .btn-atras {
+            background: #479b9b;
+            border: none;
+            color: white;
+            font-family: 'Georgia', 'Bookman Old Style', serif;
+            font-weight: 400;
+            font-size: 1.2rem;
+            padding: 0.6rem 1.6rem;
+            border-radius: 50px;
+            cursor: pointer;
+            border: 1px solid #b0e0e0;
+            transition: background 0.15s;
+        }
+        .btn-cerrar { font-size: 1.8rem; width: 55px; height: 55px; padding: 0; border-radius: 50%; }
+        .btn-cerrar:hover, .btn-atras:hover { background: #1f8a8a; }
+
+        .niveles-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+        .carpeta-nivel {
+            background: #9fcfcf;
+            border-radius: 40px 8px 40px 8px;
+            padding: 1.8rem 1.8rem;
+            min-width: 210px;
+            text-align: center;
+            font-family: 'Cormorant Garamond', 'Century', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: #014f55;
+            border: 2px solid #358585;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .carpeta-nivel:hover { background: #bae0e0; }
+
+        .herramientas-lista {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.8rem;
+        }
+        .herramienta-card {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 40px 8px 40px 8px;
+            padding: 1.5rem 1.2rem 1.8rem;
+            border-left: 8px solid #358585;
+            color: #01474d;
+        }
+        .herramienta-nombre {
+            font-family: 'Cormorant Garamond', 'Century', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+            color: #015e64;
+        }
+        .herramienta-desc {
+            font-family: 'Georgia', 'Bookman Old Style', serif;
+            font-size: 0.95rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: #02575d;
+        }
+        .video-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #358585;
+            padding: 0.5rem 1.6rem;
+            border-radius: 40px;
+            color: white;
+            text-decoration: none;
+            font-weight: 400;
+            font-family: 'Georgia', 'Bookman Old Style', serif;
+            border: 1px solid #b0e0e0;
+            transition: background 0.15s;
+        }
+        .video-btn:hover { background: #479b9b; }
+        .icon-play { font-size: 1.2rem; }
+
+        @media (max-width: 1000px) {
+            .carpetas-grid { grid-template-columns: repeat(2, 1fr); }
+            .main-title { font-size: 3.2rem; }
+            .main-title span { font-size: 2.8rem; }
+        }
+        @media (max-width: 700px) {
+            .carpetas-grid { grid-template-columns: 1fr; }
+            body { padding: 1rem; }
+            .wrapper { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Título centrado + definición a la derecha -->
+        <div>
+            <h1 class="main-title">
+                <span>Herramientas para desarrollar</span> la Competencia Digital Docente
+            </h1>
+            <div class="definicion">
+                La competencia digital docente (CDD) es el conjunto de conocimientos, habilidades, actitudes y estrategias que los educadores necesitan para utilizar las tecnologías digitales de manera eficaz, crítica, segura y creativa en su labor profesional.
+            </div>
+        </div>
+
+        <!-- 6 carpetas principales -->
+        <div id="panelInicial" class="carpetas-grid">
+            <div class="carpeta-principal" data-area="area1">ÁREA 1:<br>COMPROMISO PROFESIONAL</div>
+            <div class="carpeta-principal" data-area="area2">ÁREA 2:<br>CONTENIDOS DIGITALES</div>
+            <div class="carpeta-principal" data-area="area3">ÁREA 3:<br>ENSEÑANZA Y APRENDIZAJE</div>
+            <div class="carpeta-principal" data-area="area4">ÁREA 4:<br>EVALUACIÓN</div>
+            <div class="carpeta-principal" data-area="area5">ÁREA 5:<br>EMPODERAMIENTO DEL ALUMNADO</div>
+            <div class="carpeta-principal" data-area="area6">ÁREA 6:<br>DESARROLLO DE LA COMPETENCIA DIGITAL DEL ALUMNADO</div>
+        </div>
+
+        <!-- panel de niveles -->
+        <div id="panelNiveles" class="panel-niveles hidden">
+            <div class="cabecera-area">
+                <h2 id="areaTitulo"></h2>
+                <button class="btn-cerrar" id="cerrarNiveles">✕</button>
+            </div>
+            <div id="nivelesContainer" class="niveles-grid"></div>
+        </div>
+
+        <!-- panel de herramientas -->
+        <div id="panelHerramientas" class="panel-herramientas hidden">
+            <div class="cabecera-nivel">
+                <h3 id="nivelTitulo"></h3>
+                <button class="btn-atras" id="volverANiveles">← Volver a niveles</button>
+            </div>
+            <div id="herramientasContainer" class="herramientas-lista"></div>
+        </div>
+    </div>
+
+    <script>
+        // Base de datos completa (idéntica a la anterior)
+        const areasData = {
+            area1: {
+                nombre: "ÁREA 1: COMPROMISO PROFESIONAL",
+                niveles: {
+                    "A1-A2": [
+                        { nombre: "GMAIL", desc: "Gmail es el servicio de correo electrónico de Google, que permite enviar, recibir y organizar mensajes de forma rápida y segura.", video: "https://youtu.be/dO85wPHiFVs" },
+                        { nombre: "GOOGLE CALENDAR", desc: "Google Calendar es la herramienta de organización del tiempo de Google que permite planificar clases, reuniones y eventos escolares de forma visual, colaborativa y sincronizada en todos los dispositivos.", video: "https://youtu.be/tLjoLvSEyA4" },
+                        { nombre: "MICROSOFT TEAMS", desc: "Microsoft Teams es la plataforma de comunicación y trabajo colaborativo de Microsoft que permite organizar clases, reuniones y recursos en un entorno digital seguro e integrado.", video: "https://youtu.be/oktRhmiRkU4" },
+                        { nombre: "CLASSDOJO", desc: "ClassDojo es una plataforma de gestión del aula que facilita la comunicación entre docentes y familias, el seguimiento del comportamiento y reforzar hábitos positivos del alumnado.", video: "https://youtu.be/EGRDL3V3UmA" }
+                    ],
+                    "B1-B2": [
+                        { nombre: "GOOGLE DRIVE", desc: "Google Drive es la herramienta de almacenamiento en la nube de Google que permite guardar, organizar y compartir documentos de forma segura, favoreciendo la colaboración y la gestión eficiente del trabajo docente.", video: "https://youtu.be/PAxbhJwa2Cg" },
+                        { nombre: "NOTION", desc: "Notion es una herramienta de organización y gestión del conocimiento que permite crear espacios de trabajo colaborativos para planificar, documentar y coordinar proyectos educativos en un entorno flexible y personalizable.", video: "https://youtu.be/gR0SZXkHXOA" },
+                        { nombre: "SLACK", desc: "Slack es una plataforma de comunicación y colaboración en equipo que permite organizar conversaciones por canales, compartir archivos y centralizar la coordinación docente en un solo espacio digital.", video: "https://youtu.be/K_DdwsGQys4" },
+                        { nombre: "TRELLO", desc: "Trello es una herramienta de gestión de proyectos basada en tableros visuales que permite organizar tareas, coordinar equipos docentes y hacer seguimiento de proyectos educativos mediante listas y tarjetas en un entorno intuitivo y colaborativo.", video: "https://youtu.be/pN_4n8RyUF0" }
+                    ],
+                    "C1-C2": [
+                        { nombre: "MICROSOFT SHAREPOINT", desc: "Microsoft SharePoint es una plataforma de colaboración y gestión documental que permite crear espacios de trabajo compartidos donde los equipos docentes pueden almacenar, organizar y compartir información, documentos y recursos educativos de forma segura y estructurada.", video: "https://youtu.be/LLRtjRQ7Ekk" },
+                        { nombre: "MOODLE", desc: "Moodle es una plataforma de gestión del aprendizaje que permite crear aulas virtuales donde el profesorado puede organizar contenidos, proponer actividades, evaluar al alumnado y hacer seguimiento del progreso en un entorno digital estructurado y personalizable.", video: "https://youtu.be/nXNO0c4YjWY?si=GF_Ud9i2HiP7bSij" }
+                    ]
+                }
+            },
+            area2: {
+                nombre: "ÁREA 2: CONTENIDOS DIGITALES",
+                niveles: {
+                    "A1-A2": [
+                        { nombre: "CANVA", desc: "Canva es una plataforma de diseño gráfico que permite crear materiales visuales educativos como presentaciones, pósters, infografías o carteles de manera intuitiva y colaborativa, facilitando la comunicación de contenidos y la motivación del alumnado.", video: "https://youtu.be/dHyd6IFF8y8" },
+                        { nombre: "GENIALLY", desc: "Genially es una herramienta online para crear contenidos digitales interactivos como presentaciones, infografías, juegos y recursos didácticos dinámicos. Permite integrar elementos multimedia e interactividad sin necesidad de saber programar.", video: "https://youtu.be/l3YsnAwHTqI" },
+                        { nombre: "MICROSOFT POWERPOINT", desc: "Microsoft PowerPoint es una herramienta de creación de presentaciones que permite diseñar contenidos visuales con texto, imágenes, gráficos, audio y vídeo. Facilita la comunicación de información de forma estructurada y visual.", video: "https://youtu.be/Pk6yBolk8f0" }
+                    ],
+                    "B1-B2": [
+                        { nombre: "EDPUZZLE", desc: "Edpuzzle es una plataforma que permite convertir vídeos en experiencias de aprendizaje interactivas mediante preguntas, notas de voz y seguimiento del progreso. Facilita la evaluación formativa a través de vídeos.", video: "https://youtu.be/wMAFOKm23BM" },
+                        { nombre: "BOOK CREATOR", desc: "Book Creator es una herramienta online que permite crear libros digitales interactivos con texto, imágenes, audio y vídeo. Facilita la creación de contenidos multimedia accesibles y colaborativos.", video: "https://youtu.be/Onkkh89QILQ" }
+                    ],
+                    "C1-C2": [
+                        { nombre: "ADOBE CAPTIVATE", desc: "Adobe Captivate es una herramienta de autor para crear contenidos e-learning interactivos, simulaciones y cursos compatibles con LMS. Permite diseñar experiencias formativas con evaluaciones, ramificaciones y seguimiento del progreso.", video: "https://youtu.be/cgXd_khECDk" }
+                    ]
+                }
+            },
+            area3: {
+                nombre: "ÁREA 3: ENSEÑANZA Y APRENDIZAJE",
+                niveles: {
+                    "A1-A2": [
+                        { nombre: "KAHOOT", desc: "Kahoot! es una plataforma de aprendizaje basada en juegos que permite crear cuestionarios interactivos, encuestas y debates para motivar al alumnado, reforzar contenidos y evaluar conocimientos de manera divertida y participativa.", video: "https://youtu.be/ZK6Q8_uLr8o" },
+                        { nombre: "QUIZIZZ - WAYGROUND", desc: "Quizizz es una plataforma de evaluación gamificada que permite crear cuestionarios interactivos para trabajar en directo o de forma asíncrona. Favorece el aprendizaje autónomo mediante retroalimentación inmediata y seguimiento del progreso.", video: "https://youtu.be/-x1IWw7_igU" },
+                        { nombre: "GOOGLE CLASSROOM", desc: "Google Classroom es una plataforma de gestión del aprendizaje que permite organizar clases, distribuir tareas y comunicarse con el alumnado. Facilita el seguimiento del progreso y la evaluación continua.", video: "https://youtu.be/nEplV4yc28o" }
+                    ],
+                    "B1-B2": [
+                        { nombre: "NEARPOD", desc: "Nearpod es una herramienta que permite crear lecciones interactivas combinando presentaciones, cuestionarios, encuestas, vídeos y actividades colaborativas. Facilita la participación activa y el aprendizaje guiado en el aula.", video: "https://youtu.be/AtoxpR8ju9c" },
+                        { nombre: "PADLET", desc: "Padlet es una herramienta que permite crear muros digitales colaborativos donde el alumnado puede publicar texto, imágenes, enlaces y vídeos. Favorece la participación, la organización de ideas y el trabajo cooperativo.", video: "https://youtu.be/eBykt-UudQA" }
+                    ],
+                    "C1-C2": [
+                        { nombre: "MINECRAFT EDUCATION", desc: "Minecraft: Education Edition es una versión educativa de Minecraft que permite crear entornos virtuales para el aprendizaje basado en proyectos y la colaboración. Fomenta la creatividad, la resolución de problemas y el aprendizaje activo.", video: "https://youtu.be/b17Q6-r2AGs" }
+                    ]
+                }
+            },
+            area4: {
+                nombre: "ÁREA 4: EVALUACIÓN",
+                niveles: {
+                    "A1-A2": [
+                        { nombre: "GOOGLE FORMS", desc: "Google Forms es una herramienta de Google que permite crear formularios, cuestionarios y encuestas digitales de forma sencilla. Facilita la evaluación formativa y sumativa con retroalimentación automática.", video: "https://youtu.be/BgrB0I9oMeA" },
+                        { nombre: "RUBISTAR", desc: "RubiStar es una herramienta online gratuita que permite crear rúbricas personalizadas para evaluar tareas, proyectos o presentaciones. Facilita la evaluación transparente y consistente del aprendizaje del alumnado.", video: "https://youtu.be/Mg4HQEPuVI0" }
+                    ],
+                    "B1-B2": [
+                        { nombre: "SOCRATIVE", desc: "Socrative es una plataforma de evaluación formativa que permite crear cuestionarios y encuestas para obtener retroalimentación inmediata del alumnado. Facilita la toma de decisiones pedagógicas basadas en datos en tiempo real.", video: "https://youtu.be/2b4ADwA-KsE" }
+                    ],
+                    "C1-C2": [
+                        { nombre: "MOTE", desc: "Mote es una herramienta que permite a los docentes dar retroalimentación rápida y personalizada en trabajos escritos mediante comentarios de audio. Facilita la evaluación formativa y el desarrollo de habilidades del alumnado.", video: "https://youtu.be/Us2Vs7t18AE" },
+                        { nombre: "ADDITIO APP", desc: "Additio App es una aplicación que permite a los docentes gestionar la asistencia, las notas y el rendimiento del alumnado de manera digital. Facilita la evaluación continua y el seguimiento del progreso individual y grupal.", video: "https://youtu.be/INxRdU6vOiU?si=8Xy0jT3wVbWwwW7C" }
+                    ]
+                }
+            },
+            area5: {
+                nombre: "ÁREA 5: EMPODERAMIENTO DEL ALUMNADO",
+                niveles: {
+                    "A1-A2": [
+                        { nombre: "MICROSOFT IMMERSIVE READER", desc: "Microsoft Immersive Reader es una herramienta de Microsoft que facilita la lectura y comprensión de textos mediante ajustes de tamaño, espaciado, colores, lectura en voz alta y traducción. Empodera al alumnado al mejorar la accesibilidad y autonomía.", video: "https://youtu.be/Xd-iYEaa7is" },
+                        { nombre: "READ&WRITE", desc: "Read&Write es una herramienta de apoyo a la lectura y escritura que ofrece funciones como lectura en voz alta, predicción de palabras, diccionarios y traducción. Empodera al alumnado al favorecer la autonomía y comprensión.", video: "https://youtu.be/SDU1dMqxFJQ" }
+                    ],
+                    "B1-B2": [
+                        { nombre: "CLASSROOM SCREEN", desc: "Classroom Screen es una herramienta digital que permite proyectar recursos visuales en el aula, como relojes, temporizadores, códigos QR y señales visuales, para guiar la dinámica de clase. Empodera al alumnado al ofrecer estructuras claras y autonomía.", video: "https://youtu.be/JjK1zEQWqgo" },
+                        { nombre: "SYMBALOO", desc: "Symbaloo es una plataforma que permite organizar y acceder a recursos digitales mediante tableros visuales personalizados con enlaces, vídeos y aplicaciones. Empodera al alumnado al facilitar la autonomía y organización de su aprendizaje.", video: "https://youtu.be/4X6NZbhnExE" }
+                    ],
+                    "C1-C2": [
+                        { nombre: "MOTE - 32", desc: "Mote es una herramienta de apoyo a la lectura y escritura que ofrece funciones como lectura en voz alta, predicción de palabras, diccionarios y traducción, así como enfoque y resaltado de texto. Empodera al alumnado al favorecer la autonomía y producción de textos.", video: "https://youtu.be/WNVeE-YVi-0" }
+                    ]
+                }
+            },
+            area6: {
+                nombre: "ÁREA 6: DESARROLLO DE LA COMPETENCIA DIGITAL DEL ALUMNADO",
+                niveles: {
+                    "A1-A2": [
+                        { nombre: "COMMON SENSE EDUCATION", desc: "Common Sense Education es una plataforma que ofrece recursos y programas para desarrollar la competencia digital, la ciudadanía digital y la alfabetización mediática en el alumnado. Permite enseñar de forma estructurada sobre seguridad online y pensamiento crítico.", video: "https://youtu.be/ha9uqNZnX0w" }
+                    ],
+                    "B1-B2": [
+                        { nombre: "SCRATCH", desc: "Scratch es una plataforma que permite al alumnado aprender programación mediante bloques visuales y crear proyectos interactivos como animaciones, juegos y simulaciones. Fomenta la creatividad, resolución de problemas y pensamiento computacional.", video: "https://youtu.be/8km6TcnZDTU" },
+                        { nombre: "CODE.ORG", desc: "Code.org es una plataforma educativa que permite al alumnado aprender programación y pensamiento computacional mediante cursos guiados, actividades interactivas y proyectos prácticos. Fomenta la creatividad, resolución de problemas y competencias digitales.", video: "https://youtu.be/X-8oPJ85IGY" }
+                    ],
+                    "C1-C2": [
+                        { nombre: "AUDACITY", desc: "Audacity es un programa gratuito de edición de audio que permite grabar, mezclar y editar sonidos de manera profesional. Favorece la creación de contenidos multimedia y competencias digitales avanzadas en producción de audio.", video: "https://youtu.be/4VW2zekGSxk" },
+                        { nombre: "OBS STUDIO", desc: "OBS Studio es un programa que permite grabar la pantalla y crear vídeos educativos, facilitando que el alumnado desarrolle competencias digitales relacionadas con la creación de contenido multimedia y la comunicación digital.", video: "https://youtu.be/AI7v0UngTEM" }
+                    ]
+                }
+            }
+        };
+
+        // Lógica de navegación (exactamente igual)
+        const panelInicial = document.getElementById('panelInicial');
+        const panelNiveles = document.getElementById('panelNiveles');
+        const panelHerramientas = document.getElementById('panelHerramientas');
+        const areaTitulo = document.getElementById('areaTitulo');
+        const nivelesContainer = document.getElementById('nivelesContainer');
+        const herramientasContainer = document.getElementById('herramientasContainer');
+        const nivelTitulo = document.getElementById('nivelTitulo');
+        const cerrarNiveles = document.getElementById('cerrarNiveles');
+        const volverANiveles = document.getElementById('volverANiveles');
+
+        function mostrarNiveles(areaId) {
+            const area = areasData[areaId];
+            if (!area) return;
+            areaTitulo.textContent = area.nombre;
+            nivelesContainer.innerHTML = '';
+            for (const [nivel, herramientas] of Object.entries(area.niveles)) {
+                const div = document.createElement('div');
+                div.className = 'carpeta-nivel';
+                div.textContent = `NIVEL ${nivel}`;
+                div.dataset.nivel = nivel;
+                div.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    mostrarHerramientas(areaId, nivel);
+                });
+                nivelesContainer.appendChild(div);
+            }
+            panelInicial.classList.add('hidden');
+            panelNiveles.classList.remove('hidden');
+            panelHerramientas.classList.add('hidden');
+        }
+
+        function mostrarHerramientas(areaId, nivel) {
+            const herramientas = areasData[areaId]?.niveles[nivel];
+            if (!herramientas) return;
+            nivelTitulo.textContent = `${areasData[areaId].nombre} · NIVEL ${nivel}`;
+            herramientasContainer.innerHTML = '';
+            herramientas.forEach(h => {
+                const card = document.createElement('div');
+                card.className = 'herramienta-card';
+                card.innerHTML = `
+                    <div class="herramienta-nombre">${h.nombre}</div>
+                    <div class="herramienta-desc">${h.desc}</div>
+                    <a class="video-btn" href="${h.video}" target="_blank"><span class="icon-play">▶</span> Ver vídeo</a>
+                `;
+                herramientasContainer.appendChild(card);
+            });
+            panelHerramientas.classList.remove('hidden');
+        }
+
+        document.querySelectorAll('.carpeta-principal').forEach(c => {
+            c.addEventListener('click', () => mostrarNiveles(c.dataset.area));
+        });
+
+        cerrarNiveles.addEventListener('click', () => {
+            panelNiveles.classList.add('hidden');
+            panelHerramientas.classList.add('hidden');
+            panelInicial.classList.remove('hidden');
+        });
+
+        volverANiveles.addEventListener('click', () => {
+            panelHerramientas.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
